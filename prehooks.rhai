@@ -40,7 +40,7 @@ let core2target = #{
 };
 
 if prefix !in chip2core {
-    abort("Unsupported Chip Prefix: " + prefix);
+    abort("Unsupported Chip: " + prefix);
 }
 
 let core = chip2core.get(prefix);
@@ -50,13 +50,13 @@ variable::set("target", target);
 variable::set("chip", chip);
 variable::set("chip_u", chip_u);
 
-print("Detected MCU: " + chip);
-print("Using target: " + target);
-print("Crate Name: " + variable::get("crate_name"));
-print("Crate Type: " + variable::get("crate_type"));
-print("Project Name: " + variable::get("project-name"));
-print("Author: " + variable::get("authors"));
-print("User Name: " + variable::get("username"));
-print("Os-Arch: " + variable::get("os-arch"));
-print(variable::get("within_cargo_project"));
-print(variable::get("is_init"));
+// print("Detected MCU: " + chip);
+// print("Using target: " + target);
+// print("Crate Name: " + variable::get("crate_name"));
+// print("Crate Type: " + variable::get("crate_type"));
+// print("Project Name: " + variable::get("project-name"));
+// print("Author: " + variable::get("authors"));
+// print("User Name: " + variable::get("username"));
+// print("Os-Arch: " + variable::get("os-arch"));
+// print(variable::get("within_cargo_project"));
+// print(variable::get("is_init"));

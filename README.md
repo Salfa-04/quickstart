@@ -1,85 +1,126 @@
-# 快速开始模板
+# Rust Embedded Quickstart Template
 
-复制目录快速开始。
+A `cargo-generate` template for Rust embedded projects on STM32 chips. It includes Embassy, Defmt, and Probe-rs configurations.
 
-## 使用方法
+## Features
 
-### 复制示例目录
+- **Configuration**: Sets the target architecture based on the chip model.
+- **Embassy**: Includes Embassy Executor and common components.
+- **Defmt**: Includes `defmt` and `defmt-rtt` logging with RTT support.
+- **Structure**: Organized into `controller`, `system`, and `tasks` modules.
+- **Debugging**:
+  - **Probe-rs**: Default runner.
+  - **OpenOCD**: Optional OpenOCD configuration.
+  - **RTT Forwarding**: Optional RTT log forwarding.
 
-要在自己的项目中使用这些示例，您需要复制整个目录：
+## Prerequisites
 
-```bash
-cp /path/to/directory -r /path/to/project
-```
+Before using this template, please ensure the following tools are installed:
 
-然后重命名目录内的示例：
+1. **Rust Toolchain**
 
-```bash
-mv /path/to/project/example -r /path/to/project/temporary
-```
+   ```bash
+   pacman -S rustup
+   rustup default stable
+   ```
 
-### 修改配置字段
+2. **cargo-generate**
 
-在使用示例之前，您需要修改以下文件中的关键字段：
+   ```bash
+   pacman -S cargo-generate
+   ```
 
-1. 在 `utils/Cargo.toml` 中：
-    - 将 `<CHIP>` 修改为目标芯片 : 如 `stm32g473re`
+3. **probe-rs**
 
-2. 在 `.cargo/config.toml` 中：
-    - 将 `<CHIP>` 修改为目标芯片 : 如 `STM32G473RE`
-    - 将 `<TARGET_TRIPLE>` 修改目标平台的三元组 : 如 `thumbv7em-none-eabihf`
+   ```bash
+   pacman -S probe-rs
+   ```
 
-3. 在 `temporary/Cargo.toml` 中：
-    - 将 `<NAME>` 修改为该文件所在目录的命名 : 如 `temporary`
+4. **OpenOCD** (Optional)
 
-4. 在 `Cargo.toml` 中
-    - 在 `members` 中添加项目成员 : 如 `temporary`
+   ```bash
+   pacman -S openocd
+   ```
 
-5. 在 `temporary/.vscode/launch.json` 中：
-    - 将 `<CHIP>` 修改为目标芯片 : 如 `STM32G473RE`
-    - 将 `<TARGET_TRIPLE>` 修改目标平台的三元组 : 如 `thumbv7em-none-eabihf`
+## Quick Start
 
-6. 在 `temporary/Embed.toml` 中：
-    - 将 `<CHIP>` 修改为目标芯片 : 如 `STM32G473RE`
-
-7. 在 `openocd.cfg` 中：
-    - 将 `<CHIP>` 修改为目标芯片所代表的配置文件 : 如 `stm32g4x`
-
-8. 若要自定义 `memory.x`，删除 `memory-x` Feature，并在 `/path/to/project/utils` 中添加 `memory.x`
-
-## 下载程序
-
-### 使用 `Probe-rs` 下载
+Generate a new project using the following command:
 
 ```bash
-cargo run # in debug
-    # or
-cargo rr # in release
+cargo generate --git https://github.com/Salfa-04/quickstart --name my-project
 ```
 
-### 使用 `OpenOCD` 下载
+### Interactive Configuration
 
-```bash
-cargo b && openocd # in debug
-    # or
-cargo br && openocd # in release
+During the generation process, you will need to answer the following questions:
 
-# Attach
-cargo rr # or `cargo r` in debug
+1. **Target Chip**: Enter your target chip model (e.g., `stm32g473re`). The template will automatically identify the chip series and set the correct compilation target.
+2. **Include RTT Forwarding Support?**: Whether to enable RTT log forwarding support.
+   - If enabled, you need to enter the **RTT Server Address** (e.g., `127.0.0.1:1008`).
+3. **Include OpenOCD Configuration Files?**: Whether to generate OpenOCD configuration files.
+   - If enabled, you need to select the corresponding configuration file (e.g., `stm32g4x.cfg`).
+
+## Project Structure
+
+The generated project contains the following main parts:
+
+```text
+.
+├── Cargo.toml              # Workspace configuration
+├── .cargo/config.toml      # Build and run configuration (Auto-generated Target and Runner)
+├── utils/                  # Common utility library (Initialization, macros, etc.)
+└── <project-name>/         # Your application crate
+    ├── Cargo.toml
+    ├── Embed.toml          # probe-rs configuration
+    ├── build.rs
+    └── src/
+        ├── main.rs         # Program entry point
+        ├── controller/     # Control logic
+        ├── system/         # Hardware abstraction and system configuration (GPIO, Clock, Interrupts, etc.)
+        └── tasks/          # Async tasks (Blinky, Health check, etc.)
 ```
 
-## 转发调试信息
+## Build & Run
 
-打开并修改 `example/Embed.toml` 中的目标地址:
+### Using Probe-rs (Recommended)
 
-```toml
-rtt.up_channels = [
-    { channel = 0, log_format = "{s}", socket = "172.24.192.1:8888", ...},
-]
-```
+The template configures `probe-rs` as the runner by default.
 
-其中 `socket` 即为目标转发地址，打开服务器后:
+- **Run in Debug Mode**:
 
-```bash
-cargo embed --release
-```
+  ```bash
+  cargo run
+  # Or use the alias
+  cargo r
+  ```
+
+- **Run in Release Mode**:
+
+  ```bash
+  cargo run --release
+  # Or use the alias
+  cargo rr
+  ```
+
+### Using OpenOCD
+
+If you chose to generate OpenOCD configuration:
+
+- Start the OpenOCD Service:
+
+   ```bash
+   openocd -f openocd.cfg
+   ```
+
+- Download and Run the Program:
+
+   ```bash
+   openocd -f <project-name>/openocd.cfg
+   ```
+
+   *(Note: You may need to modify the runner configuration in `.cargo/config.toml` to adapt to GDB/OpenOCD)*
+
+## FAQ
+
+- **Which chips are supported?**
+  Currently, the script supports common STM32 series (F0, F1, F3, F4, F7, G0, G4, H7, L0, L4, U5, etc.). If you encounter an unsupported chip, please check `prehooks.rhai` or manually modify the generated `.cargo/config.toml`.
