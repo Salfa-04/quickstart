@@ -41,17 +41,16 @@ pub use status::SysMode;
 
 /// # Private Imports
 mod private {
-    use utils::atomic;
+    pub use assign_resources::assign_resources;
+    pub use utils::{atomic, bitenum, prelude::*};
 
     pub use super::heartbeat::HeartBeat;
     pub use super::{Device, WATCH_LIST};
-    pub use utils::prelude::{hal, time};
 
     pub use hal::bind_interrupts;
     pub use hal::{Peri, peripherals};
     pub use time::Ticker;
 
-    pub use assign_resources::assign_resources;
     pub use atomic::Ordering::Relaxed as Order;
     pub use atomic::{AtomicBool, AtomicI8};
 }

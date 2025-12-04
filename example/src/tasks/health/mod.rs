@@ -2,24 +2,30 @@
 //! # Health Task
 //!
 
-use crate::system::Device;
-use crate::system::WATCH_LIST;
+use crate::{system::*, time::Instant};
 use utils::init_ticker;
 
 #[embassy_executor::task]
 pub async fn task() -> ! {
     let mut t = init_ticker!(Device::interval(), ms);
 
+    let mut last = Instant::now();
+
     loop {
         for device in WATCH_LIST {
             if !device.tick() {
-                defmt::warn!("Device Offline: {:?}", device.display());
+                SysMode::Error.set();
             }
         }
 
-        // for ele in WATCH_LIST {
-        //     defmt::info!("{:?}", ele.display());
-        // }
+        if last.elapsed().as_secs() >= 1 {
+            last = Instant::now();
+            for ele in WATCH_LIST {
+                if !ele.check() {
+                    defmt::warn!("{:?}", ele.display());
+                }
+            }
+        }
 
         t.next().await
     }
