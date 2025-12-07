@@ -35,24 +35,24 @@ SECTIONS
 {
     .itcm : ALIGN(8)
     {
+        __siitcm = LOADADDR(.itcm);
         . = ALIGN(8);
         __sitcm = .;
-        *(.itcm.*);
+        *(.itcm .itcm.*);
         . = ALIGN(8);
         __eitcm = .;
     } > ITCM AT > FLASH
 
     .axisram : ALIGN(8)
     {
+        __siaxisram = LOADADDR(.axisram);
         . = ALIGN(8);
         __saxisram = .;
-        *(.axisram.*);
+        *(.axisram .axisram.*);
         . = ALIGN(8);
         __eaxisram = .;
     } > AXISRAM AT > FLASH
 
-    __siitcm = LOADADDR(.itcm);
-    __siaxisram = LOADADDR(.axisram);
 
 } INSERT AFTER .rodata;
 
@@ -61,28 +61,28 @@ SECTIONS
     .sram1 (NOLOAD) : ALIGN(4)
     {
         . = ALIGN(4);
-        *(.sram1.*);
+        *(.sram1 .sram1.*);
         . = ALIGN(4);
     } > SRAM1
 
     .sram2 (NOLOAD) : ALIGN(4)
     {
         . = ALIGN(4);
-        *(.sram2.*);
+        *(.sram2 .sram2.*);
         . = ALIGN(4);
     } > SRAM2
 
     .sram4 (NOLOAD) : ALIGN(4)
     {
         . = ALIGN(4);
-        *(.sram4.*);
+        *(.sram4 .sram4.*);
         . = ALIGN(4);
     } > SRAM4
 
     .bsram (NOLOAD) : ALIGN(4)
     {
         . = ALIGN(4);
-        *(.bsram.*);
+        *(.bsram .bsram.*);
         . = ALIGN(4);
     } > BSRAM
 }
