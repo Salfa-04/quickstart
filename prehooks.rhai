@@ -1,8 +1,32 @@
-let chip = variable::get("chip").to_lower();
+let chip = switch variable::get("board") {
+
+    "RM-TYPEC" => {
+        variable::set("rm_typec", true);
+        variable::set("ocdcfg", "stm32f4x.cfg");
+
+        "stm32f407ig"
+    },
+
+    "DM-MC02" => {
+        variable::set("dm_mc02", true);
+        variable::set("ocdcfg", "stm32h7x.cfg");
+
+        "stm32h723vg"
+    },
+
+    _ => variable::get("chip"),
+};
+
+let chip_l = chip.to_lower();
 let chip_u = chip.to_upper();
 
 // Safety: Regex Ensures.
-let prefix = chip.sub_string(..7);
+let prefix = chip_l.sub_string(..7);
+
+let board2chip = #{
+    "RM-TYPEC": "stm32f407ig",
+    "DM-MC02":  "stm32h723vg",
+};
 
 let chip2core = #{
     "stm32u0": "Cortex-M0(+)",
@@ -47,7 +71,7 @@ let core = chip2core.get(prefix);
 let target = core2target.get(core);
 
 variable::set("target", target);
-variable::set("chip", chip);
+variable::set("chip_l", chip_l);
 variable::set("chip_u", chip_u);
 
 // print("Detected MCU: " + chip);

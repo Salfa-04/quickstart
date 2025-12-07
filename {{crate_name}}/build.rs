@@ -18,13 +18,7 @@ fn main() -> std::io::Result<()> {
     // Output the build.map file   : This is useful for analysis.
     cargo_emit::rustc_link_arg!(format!("-Map={}/build.map", package));
 
-    {% if ocd -%}
     write_openocd_config_file(package)?;
-
-    {% else -%}
-    // write_openocd_config_file(package)?;
-
-    {% endif -%}
 
     Ok(())
 }
