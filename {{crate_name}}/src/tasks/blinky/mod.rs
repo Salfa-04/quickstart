@@ -2,8 +2,8 @@
 //! # Blinky Task
 //!
 
-use crate::{hal, system::*};
-use hal::gpio::{Level, Output as OP, Speed};
+use crate::{hal::gpio, system::*};
+use gpio::{Level, Output as OP, Speed};
 
 #[embassy_executor::task]
 pub async fn task(p: BlinkySrc) -> ! {

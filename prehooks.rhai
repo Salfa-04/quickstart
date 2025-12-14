@@ -1,16 +1,12 @@
 let chip = switch variable::get("board") {
 
     "RM-TYPEC" => {
-        variable::set("rm_typec", true);
         variable::set("ocdcfg", "stm32f4x.cfg");
-
         "stm32f407ig"
     },
 
     "DM-MC02" => {
-        variable::set("dm_mc02", true);
         variable::set("ocdcfg", "stm32h7x.cfg");
-
         "stm32h723vg"
     },
 
@@ -73,14 +69,3 @@ let target = core2target.get(core);
 variable::set("target", target);
 variable::set("chip_l", chip_l);
 variable::set("chip_u", chip_u);
-
-// print("Detected MCU: " + chip);
-// print("Using target: " + target);
-// print("Crate Name: " + variable::get("crate_name"));
-// print("Crate Type: " + variable::get("crate_type"));
-// print("Project Name: " + variable::get("project-name"));
-// print("Author: " + variable::get("authors"));
-// print("User Name: " + variable::get("username"));
-// print("Os-Arch: " + variable::get("os-arch"));
-// print(variable::get("within_cargo_project"));
-// print(variable::get("is_init"));
