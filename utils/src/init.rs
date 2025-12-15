@@ -18,8 +18,8 @@ core::arch::global_asm! {
     //  ldr r1, =__eitcm
     //  ldr r2, =__siitcm
     //  0:
-    //  cmp r1, r0
-    //  beq 1f
+    //  cmp r0, r1
+    //  bhs 1f
     //  ldm r2!, {{r3, r4}}
     //  stm r0!, {{r3, r4}}
     //  b 0b
