@@ -21,7 +21,6 @@ features = ["defmt", "single-bank", "time-driver-any", "{{chip_l}}", "memory-x"]
 
 defmt.workspace = true
 
-static_cell     = "2.1"
 embassy-futures = "0.1"
 bitfield-struct = "0.12"
 

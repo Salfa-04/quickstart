@@ -15,7 +15,6 @@ pub use init::sys_init;
 pub use prelude::ll::asm;
 pub use prelude::ll::peripheral;
 pub use prelude::time::Timer as T;
-pub use static_cell::*;
 
 /// # Atomic Types Module
 pub mod atomic {
