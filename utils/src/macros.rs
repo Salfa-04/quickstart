@@ -1,19 +1,17 @@
 //!
-//! # Macros
+//! Macros
 //!
 
-///
-/// # init_ticker
 ///
 /// Initialize a Ticker with a given period.
 ///
 /// `init_ticker!()` initializes a Ticker with a given period.
 ///
-/// ## Example
+/// # Example
 /// ```
-/// let mut t = init_ticker!(500); // 500ms
+/// let mut t = init_ticker!(500, ms);
 ///
-/// (do something here..)
+/// // (do something here..)
 ///
 /// t.reset(); // Reset the ticker
 ///
@@ -21,7 +19,6 @@
 ///   // Do something
 ///    t.next().await;
 /// }
-///
 /// ```
 ///
 #[macro_export]

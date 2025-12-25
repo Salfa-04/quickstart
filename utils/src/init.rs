@@ -1,12 +1,17 @@
 //!
-//! # System Initialization
+//! System Initialization
+//!
+//! # Definitions
+//!
+//! - `__pre_init`: Early Initialization Assembly Routine
+//! - `sys_init`: System Initialization Function
 //!
 
 use crate::prelude::{hal, ll};
 use hal::{Config, Peripherals, init, rcc, time::mhz};
-use ll::{Peripherals as CorePeripherals, peripheral::SCB};
+use ll::Peripherals as CorePeripherals;
 
-// __pre_init function to be called before main
+// `__pre_init` will be called before main
 core::arch::global_asm! {
     ".global __pre_init",
     ".type __pre_init, %function",
@@ -25,11 +30,12 @@ core::arch::global_asm! {
     //  b 0b
     //  1:",
 
-    "bx lr", // Return from __pre_init
+    // return
+    "bx lr",
 }
 
 ///
-/// # System Initialization Function
+/// System Initialization Function
 ///
 /// This function initializes the system peripherals and clocks.
 ///

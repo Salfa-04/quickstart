@@ -1,3 +1,7 @@
+//!
+//! Utility Functions and Types for Embedded Development.
+//!
+
 #![no_std]
 #![no_main]
 #![allow(unused_imports)]
@@ -16,12 +20,17 @@ pub use prelude::ll::asm;
 pub use prelude::ll::peripheral;
 pub use prelude::time::Timer as T;
 
-/// # Atomic Types Module
+/// Atomic Types Module
 pub mod atomic {
     pub use ::portable_atomic::*;
 }
 
-/// # Preludes for Easy Imports.
+/// Heapless Types Module
+pub mod heapless {
+    pub use ::heapless::*;
+}
+
+/// Preludes for Easy Imports.
 pub mod prelude {
     pub use ::cortex_m as ll; // Low Level
     pub use ::embassy_futures as ef; // Futures
@@ -30,7 +39,7 @@ pub mod prelude {
     pub use ::embassy_time as time; // Time
 }
 
-/// # Defmt Panic Handler
+/// Defmt Panic Handler
 #[::defmt::panic_handler]
 fn soft_panic() -> ! {
     ::panic_probe::hard_fault()
