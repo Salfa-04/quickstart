@@ -13,24 +13,29 @@ mod cell;
 mod init;
 mod macros;
 
-pub use bitfield_struct::*;
 pub use cell::MemCell;
 pub use init::sys_init;
+
+/// Re-exports of `Bitfield Struct` Crate
+pub use bitfield_struct::*;
+/// Re-exports of `Cortex-M` Assembly Instructions
 pub use prelude::ll::asm;
+/// Re-exports of `Cortex-M` Peripheral Types
 pub use prelude::ll::peripheral;
+/// Re-exports of `Timer`
 pub use prelude::time::Timer as T;
 
-/// Atomic Types Module
+/// Re-exports of Atomic Types
 pub mod atomic {
     pub use ::portable_atomic::*;
 }
 
-/// Heapless Types Module
+/// Re-exports of `Heapless` Crate
 pub mod heapless {
     pub use ::heapless::*;
 }
 
-/// Preludes for Easy Imports.
+/// Preludes for Commonly Used Crates
 pub mod prelude {
     pub use ::cortex_m as ll; // Low Level
     pub use ::embassy_futures as ef; // Futures
