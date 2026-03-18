@@ -14,7 +14,15 @@ pub async fn task() -> ! {
     loop {
         for device in WATCH_LIST {
             if !device.tick() {
-                SysMode::Error.set();
+                match SysMode::get() {
+                    SysMode::Boot => {}
+                    SysMode::Error => {}
+
+                    _ => {
+                        defmt::error!("Device {:?} lost!", device.display());
+                        SysMode::Error.set()
+                    }
+                }
             }
         }
 

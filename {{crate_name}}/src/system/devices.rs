@@ -143,7 +143,7 @@ pub struct Display<'t> {
     inner: &'t Device,
 }
 
-impl<'t> defmt::Format for Display<'t> {
+impl defmt::Format for Display<'_> {
     fn format(&self, fmt: defmt::Formatter) {
         let this = self.inner;
         let device: _ = this.heartbeat();
